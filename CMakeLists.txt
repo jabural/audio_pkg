@@ -40,14 +40,9 @@ add_executable(audio_listener src/audio_listener.cpp)
 ament_target_dependencies(audio_listener ${dependencies})
 target_link_libraries(audio_listener "${cpp_typesupport_target}")
 
-add_executable(audio_playback src/audio_playback.cpp)
-ament_target_dependencies(audio_playback ${dependencies})
-target_link_libraries(audio_playback "${cpp_typesupport_target}")
-
 add_executable(audio_playback_server src/audio_playback_server.cpp)
 ament_target_dependencies(audio_playback_server ${dependencies})
 target_link_libraries(audio_playback_server "${cpp_typesupport_target}")
-
 
 add_executable(audio_client src/audio_client.cpp)
 ament_target_dependencies(audio_client rclcpp rclcpp_action std_msgs)
@@ -55,7 +50,6 @@ target_link_libraries(audio_client "${cpp_typesupport_target}")
 
 install(TARGETS
   audio_listener
-  audio_playback
   audio_client
   audio_playback_server
   DESTINATION lib/${PROJECT_NAME})
