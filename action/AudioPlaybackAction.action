@@ -1,0 +1,10 @@
+# Goal: Audio data to play
+std_msgs/Float32MultiArray audio_data
+
+---
+# Result: Total time played in seconds
+float32 total_time
+
+---
+# Feedback: Elapsed time during playback in seconds
+float32 elapsed_time
