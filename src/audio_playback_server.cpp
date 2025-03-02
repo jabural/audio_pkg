@@ -40,11 +40,11 @@ class AudioPlayer : public rclcpp::Node {
       throw std::runtime_error("Miniaudio context init failed");
     }
 
-    // Configure the playback device to use mono audio at 44.1 kHz with 32-bit float samples.
+    // Configure the playback device to use mono audio at 16 kHz with 32-bit float samples.
     ma_device_config deviceConfig = ma_device_config_init(ma_device_type_playback);
     deviceConfig.playback.format = ma_format_f32;
     deviceConfig.playback.channels = 1;
-    deviceConfig.sampleRate = 44100;
+    deviceConfig.sampleRate = 16000;
     deviceConfig.dataCallback = AudioPlayer::data_callback;
     deviceConfig.pUserData = this;
 
@@ -125,7 +125,7 @@ class AudioPlayer : public rclcpp::Node {
         playback_finished_ = false;
         RCLCPP_INFO(this->get_logger(), "Loaded %zu samples into buffer.", audio_buffer_.size());
         total_samples = static_cast<float>(audio_buffer_.size());
-        sample_rate = 44100.0f;
+        sample_rate = 16000.0f;
         expected_duration = total_samples / sample_rate;
       }
 

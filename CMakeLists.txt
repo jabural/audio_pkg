@@ -12,6 +12,10 @@ find_package(rclcpp_action REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(action_msgs REQUIRED)
+find_package(ament_cmake_python REQUIRED)
+find_package(rclpy REQUIRED)
+
+ament_python_install_package(scripts)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "action/AudioPlaybackAction.action"
@@ -53,6 +57,12 @@ install(TARGETS
   audio_client
   audio_playback_server
   DESTINATION lib/${PROJECT_NAME})
+
+install(PROGRAMS
+  scripts/vad_detector.py
+  DESTINATION lib/${PROJECT_NAME}
+  )
+
 
 # install(
 #   DIRECTORY config

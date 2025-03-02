@@ -30,7 +30,7 @@ class AudioPublisher : public rclcpp::Node {
     // Create a publisher for audio data on the "audio_data" topic with a queue size of 10.
     publisher_ = this->create_publisher<std_msgs::msg::Float32MultiArray>("audio_data", 10);
 
-    // Set the buffer size to 4000 samples (~90 ms at 44.1 kHz) to batch audio data
+    // Set the buffer size to 4000 samples (~250 ms at 16 kHz) to batch audio data
     // before publishing, reducing message frequency.
     buffer_size_ = 4000;
 
@@ -40,11 +40,11 @@ class AudioPublisher : public rclcpp::Node {
       throw std::runtime_error("Miniaudio context init failed");
     }
 
-    // Configure the recording device for mono, 44.1 kHz, float32 format.
+    // Configure the recording device for mono, 16 kHz, float32 format.
     ma_device_config deviceConfig = ma_device_config_init(ma_device_type_capture);
     deviceConfig.capture.format = ma_format_f32;
     deviceConfig.capture.channels = 1;
-    deviceConfig.sampleRate = 44100;
+    deviceConfig.sampleRate = 16000;
     deviceConfig.dataCallback = AudioPublisher::data_callback;
     deviceConfig.pUserData = this;  // Pass this instance to the callback.
 
