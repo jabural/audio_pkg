@@ -32,9 +32,9 @@ class SileroVADNode(Node):
 
         # Declare configurable parameters with default values for flexibility
         self.declare_parameter('sample_rate', 16000)  # Audio sample rate in Hz
-        self.declare_parameter('threshold', 0.5)  # VAD probability threshold for speech detection
+        self.declare_parameter('threshold', 0.3)  # VAD probability threshold for speech detection
         self.declare_parameter('window_size_ms', 96)  # Size of audio window in milliseconds
-        self.declare_parameter('speech_pad_ms', 300)  # Padding duration in ms to extend speech detection
+        self.declare_parameter('speech_pad_ms', 500)  # Padding duration in ms to extend speech detection
 
         # Retrieve the parameter values from ROS 2 parameter server
         self.sample_rate = self.get_parameter('sample_rate').value
@@ -69,6 +69,7 @@ class SileroVADNode(Node):
 
         # Log a message to indicate successful initialization
         self.get_logger().info('Silero VAD Node initialized')
+
 
     def setup_vad_model(self):
         """Loads the Silero VAD model from snakers4/silero-vad or falls back to energy-based VAD."""
@@ -142,7 +143,7 @@ class SileroVADNode(Node):
 
             # Implement speech padding logic to extend detection beyond brief silences
             current_time = time.time()  # Get the current timestamp
-            if speech_prob > 0.3:  # If speech probability exceeds threshold
+            if speech_prob > self.threshold:  # If speech probability exceeds threshold
                 if not self.is_speech:  # If this is a new speech segment
                     self.get_logger().info('Speech detected')
                 self.is_speech = True  # Mark as speech active
@@ -153,7 +154,7 @@ class SileroVADNode(Node):
                 self.get_logger().info('Speech ended')
 
             # Return True if speech probability exceeds 0.5
-            return speech_prob > 0.5
+            return self.is_speech
 
         except Exception as e:
             # Log any processing errors and return False (no speech detected)
